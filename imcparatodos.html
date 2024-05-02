@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indice de massa corporal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2? family= Open+Sans:wght@300;400 & display=swap');
+
+:root {
+    --primery-color: rgb(17, 86, 102);
+    --primery-color-darker: rgb(9, 48,56);
+}
+
+* {
+    box-sizing: border-box;
+    outline: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--primery-color);
+    font-family: 'open sans', sans-serif;
+    font-size: 1.3em;
+    line-height: 1.5em;
+}
+
+.container {
+    max-width: 640px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+form input, form label, form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+form input{
+    font-size: 24px;
+    height: 50px;
+    padding: 0 20px;
+}
+
+form input:focus {
+ outline: 1px solid var(--primery-color) ;    
+}
+
+form button{
+    border: none;
+    background: var(--primery-color);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    height: 50px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+form button:hover{
+    background: var(--primery-color-darker);
+}
+
+
+.paragrafo-resultado, .bad{
+    background: rgb(109, 225, 182);
+    padding: 10px 20px;
+};
+
+.bad {
+    background: #f08080;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <section class="container">
+        <h1> Calcule seu imc </h1>
+      <form action="" id="form" method="post">
+      <label for="peso">peso</label> 
+      <input type="text" id="peso" name="peso">
+      <label for="altura">altura</label>
+      <input type="text" id="altura" name="altura">
+      <button type="submit">enviar</button>
+
+      </form>
+      
+      <div id="resultado"></div>
+           
+ 
+    </section>
+
+    <script>
+const form = document.querySelector('#form');
+
+form.addEventListener('submit', function (event) {
+  event.preventDefault();
+ const inputpeso = event.target.querySelector('#peso');
+ const inputaltura = event.target.querySelector('#altura')
+ 
+ const peso = Number (inputpeso.value);
+ const altura = Number (inputaltura.value);
+ 
+if (!peso) {
+    setResultado('peso invalido', false);
+    return;
+}
+
+if (!altura) {
+    setResultado('altura invalida', false);
+    return;
+}
+
+const imc = getimc(peso, altura);
+const nivelimc = getnivelimc(imc);
+
+const msg = `Seu imc é ${imc} (${nivelimc})`;
+
+setResultado(msg, true);
+
+});
+
+function getnivelimc (imc) {
+    const nivel = ['abaixo do peso','peso normal', 'sobre peso', 'obesidade grau 1','obesidade grau 2', 'obesidade grau 3'];
+
+    if(imc >= 39.9) return nivel[5];
+    if (imc >= 34.9) return nivel[4];   
+    if (imc >= 29.9) return nivel[3]; 
+    if (imc >= 24.9) return nivel[2];  
+    if (imc >= 18.5) return nivel[1];
+    if (imc < 18.5) return nivel[0]; 
+
+}
+
+function  getimc (peso, altura) {
+    const imc = peso / altura ** 2;
+    return imc.toFixed(2);
+
+}
+
+function criaP() {
+    const p = document.createElement('p');
+    return p;
+}
+
+
+function setResultado (msg, isvalid){
+    const resultado = document.querySelector('#resultado');
+    resultado.innerHTML = '';
+
+    const p = criaP();
+
+    if (isvalid){
+     p.classList.add('paragrafo-resultado');
+    } else {
+        p.classList.add('bad');
+    }
+
+    p.innerHTML = msg
+    resultado.appendChild(p);
+}
+
+    </script>
+</body>
+
+</html>
